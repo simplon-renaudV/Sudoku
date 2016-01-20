@@ -1,0 +1,40 @@
+.boutons
+{
+	width: 60px;
+	height: 60px;
+	text-align: center;
+}
+.case
+{
+	background-color: yellow;
+	width: 60px;
+	height: 60px;
+	display: inline-block;
+	border: 1px solid black;
+	text-align: center;
+	vertical-align: center;
+}
+
+.colonne1, .colonne4, .colonne7
+{
+	border-left: 3px solid black;
+}
+
+.colonne9
+{
+	border-right: 3px solid black;
+}
+
+.ligne1, .ligne4, .ligne7
+{
+	border-top: 3px solid black;
+}
+
+.ligne9
+{
+	border-bottom: 3px solid black;
+}
+.cb
+{
+	clear:both;
+}*/
