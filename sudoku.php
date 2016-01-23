@@ -36,6 +36,11 @@
 			echo "<div class='col-xs-1'><input type='button' class='boutons' value='Effacer'></div>";
 		}
 		
+		if ($ligne==2)
+		{
+			echo "<div class='col-xs-1'><input type='button' id='btVerifier' value='Vérifier'></div>";
+		}
+		
 		echo "<div class='col-xs-1'></div>";
 		
 		echo "</div>";

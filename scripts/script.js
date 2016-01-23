@@ -1,12 +1,14 @@
 var cases = document.getElementsByClassName("case");
 var boutons = document.getElementsByClassName("boutons");
+var verif = document.getElementById("btVerifier");
 var btActif = 0;
 var tabCases = [];
 
 
 // Constructeur pour l'objet case (bloc représente le numéro du bloc de 9 cases la contenant)
-function Case(ligne, colonne, valeur, numero, bloc, valPossibles)
+function Case(ligne, colonne, valeur, numero, bloc, valPossibles, modif)
 {
+	this.modif = true;
 	this.numero = numero;
 	this.ligne = ligne;
 	this.colonne = colonne;
@@ -81,6 +83,35 @@ $(document).ready(function(){
 		cases[i].addEventListener('click', fCases, false);
 	}
 
+	verif.addEventListener('click', verifier, false);
+
+	// verifie si le sudoku est bien valide
+	function verifier()
+	{
+		
+	}
+
+	// Permet de sélectionner un bouton et de mettre sa valeur en valeur active (elle va etre marquée dans les cases ou on cliquera)
+	function fBoutons()
+	{
+		btActif = this.value;
+	}
+
+	// Permet d'afficher la valeur active dans la case sur laquelle on clique
+	function fCases()
+	{
+		num = this.id.substring(11,13); // Récupère le numéro de la case depuis l'id
+
+		if ((btActif != 0) && (btActif != "Effacer") && tabCases[num].modif == true)
+		{
+			this.innerHTML = "<p>" + btActif + "</p>";
+		}
+		else if (tabCases[num].modif == true)
+		{
+			this.innerHTML = "<p>0</p>";
+		}
+	}
+
 	// Renvoie un tableau contenant les numeros des cases du bloc
 	function calculBloc(bloc)
 	{
@@ -93,25 +124,6 @@ $(document).ready(function(){
 			}
 		}
 		return tabBloc;
-	}
-
-	// Permet de sélectionner un bouton et de mettre sa valeur en valeur active (elle va etre marquée dans les cases ou on cliquera)
-	function fBoutons()
-	{
-		btActif = this.value;
-	}
-
-	// Permet d'afficher la valeur active dans la case sur laquelle on clique
-	function fCases()
-	{
-		if ((btActif != 0) && (btActif != "Effacer"))
-		{
-			this.innerHTML = "<p>" + btActif + "</p>";
-		}
-		else
-		{
-			this.innerHTML = "<p>0</p>";
-		}
 	}
 
 	// Vérifie la présence ou non d'un chiffre dans la case
@@ -180,12 +192,13 @@ $(document).ready(function(){
 			}
 			else
 			{
+				tabCases[caseAlea].modif = false;
 				tabCases[caseAlea].valeur = valAlea;
 				cases[caseAlea].innerHTML = "<p>"+valAlea+"</p>";
+				cases[caseAlea].style.color='red';
 			}
 		}
 	}
 
 	creationSudoku();
-
 });
