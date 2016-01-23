@@ -25,12 +25,19 @@
 		echo "<div class='row'>";
 		for ($colonne=1; $colonne<=9;$colonne++)
 		{
-			echo "<div class='col-xs-1 case ligne".$ligne." colonne".$colonne."' id='lig".$ligne."col".$colonne."num".$numCase."'><p>x</p></div>";
+			echo "<div class='col-xs-1 case ligne".$ligne." colonne".$colonne."' id='lig".$ligne."col".$colonne."num".$numCase."'><p>0</p></div>";
 			$numCase++;
 		}
-		echo "<div class='col-xs-1'></div>";
+		
 		echo "<div class='col-xs-1'><input type='button' class='boutons' id='bt".$ligne."' value='".$ligne."'></div>";
+		
+		if ($ligne==1)
+		{
+			echo "<div class='col-xs-1'><input type='button' class='boutons' value='Effacer'></div>";
+		}
+		
 		echo "<div class='col-xs-1'></div>";
+		
 		echo "</div>";
 	}
 ?>

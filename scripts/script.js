@@ -104,7 +104,7 @@ $(document).ready(function(){
 	// Permet d'afficher la valeur active dans la case sur laquelle on clique
 	function fCases()
 	{
-		if ((btActif != 0) && (btActif != "effacer"))
+		if ((btActif != 0) && (btActif != "Effacer"))
 		{
 			this.innerHTML = "<p>" + btActif + "</p>";
 		}
@@ -117,7 +117,7 @@ $(document).ready(function(){
 	// Vérifie la présence ou non d'un chiffre dans la case
 	function testCase(chiffre, case1)
 	{
-		if (tabCases[case1].valeur != 'x')
+		if (tabCases[case1].valeur != '0')
 		{
 			return false;
 		} 
