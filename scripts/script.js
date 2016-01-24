@@ -1,6 +1,3 @@
-var lignes = ['0'];
-var colonnes = ['0'];
-var blocs = ['0'];
 var cases = document.getElementsByClassName("case");
 var boutons = document.getElementsByClassName("boutons");
 var verif = document.getElementById("btVerifier");
@@ -139,11 +136,9 @@ $(document).ready(function(){
 		{
 			numCase = 9*i+(colonne-1);
 
-			console.log("chiffre : "+chiffre+" colonne : "+colonne+" case : "+numCase+" possibilite : "+tabCases[numCase].valPossibles)
-
-			for (var j=0; j<tabCases[i].valPossibles.length; j++)
+			for (var j=0; j<tabCases[numCase].valPossibles.length; j++)
 			{
-				if (tabCases[i].valPossibles[j] == chiffre)
+				if (tabCases[numCase].valPossibles[j] == chiffre)
 				{
 					tabCases[numCase].valPossibles.splice(j, 1);
 				}
@@ -153,17 +148,17 @@ $(document).ready(function(){
 
 	// Enlève le chiffre sur toutes les cases du bloc comme possibilite
 	function testBloc(chiffre, bloc)
-	{/*
+	{
 		for (var i=0; i<bloc.length; i++)
 		{
-			for (var j=0; j<tabCases[i].valPossibles.length; j++)
+			for (var j=0; j<tabCases[bloc[i]].valPossibles.length; j++)
 			{
-				if (tabCases[i].valPossibles[j] == chiffre)
+				if (tabCases[bloc[i]].valPossibles[j] == chiffre)
 				{
-					tabCases[i].valPossibles.splice(chiffre-1, 1);
+					tabCases[bloc[i]].valPossibles.splice(j, 1);
 				}
 			}
-		}*/	
+		}
 	}
 	
 	function creationSudoku()
@@ -179,11 +174,10 @@ $(document).ready(function(){
 			tabCases[i].valeur = valAlea;
 			cases[i].innerHTML = "<p>"+valAlea+"</p>";
 			cases[i].style.color="red";
-			
+		
 			testLigne(valAlea, tabCases[i].ligne);
 			testColonne(valAlea, tabCases[i].colonne);
 			testBloc(valAlea, casesBloc);
-		
 		}
 	
 		tabSolution = tabCases;
