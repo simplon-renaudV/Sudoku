@@ -20,7 +20,8 @@
 	display: inline-block;
 	border: 1px solid black;
 	text-align: center;
-	vertical-align: center;
+	padding-top: 1%;
+	font-size: 2em;
 }
 
 .colonne1, .colonne4, .colonne7

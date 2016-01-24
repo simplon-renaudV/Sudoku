@@ -1,94 +1,99 @@
+var lignes = ['0'];
+var colonnes = ['0'];
+var blocs = ['0'];
 var cases = document.getElementsByClassName("case");
 var boutons = document.getElementsByClassName("boutons");
 var verif = document.getElementById("btVerifier");
 var btActif = 0;
 var tabCases = [];
 
-
-// Constructeur pour l'objet case (bloc représente le numéro du bloc de 9 cases la contenant)
-function Case(ligne, colonne, valeur, numero, bloc, valPossibles, modif)
-{
-	this.modif = true;
-	this.numero = numero;
-	this.ligne = ligne;
-	this.colonne = colonne;
-	this.valeur = valeur;
-	this.valPossibles = {"1":true, "2":true, "3":true, "4":true, "5":true, "6":true, "7":true, "8":true, "9":true}; // true signifie que la case peut avoir cette valeur la
-	ligBloc = ligne/3; 
-	colBloc = colonne/3;
-	
-	// calcul du bloc de 9 cases
-	if (ligBloc <= 1)  
-	{
-		if (colBloc <= 1)
-		{
-			this.bloc = '1';
-		}
-		if ((colBloc > 1) && (colBloc <= 2))
-		{
-			this.bloc = '2';
-		}
-		if ((colBloc > 2) && (colBloc <= 3))
-		{
-			this.bloc = '3';
-		}
-	}
-	if ((ligBloc > 1) && (ligBloc <= 2))
-	{
-		if (colBloc <= 1)
-		{
-			this.bloc = '4';
-		}
-		if ((colBloc > 1) && (colBloc <= 2))
-		{
-			this.bloc = '5';
-		}
-		if ((colBloc > 2) && (colBloc <= 3))
-		{
-			this.bloc = '6';
-		}
-	}
-	if ((ligBloc > 2) && (ligBloc <= 3))
-	{
-		if (colBloc <= 1)
-		{
-			this.bloc = '7';
-		}
-		if ((colBloc > 1) && (colBloc <= 2))
-		{
-			this.bloc = '8';
-		}
-		if ((colBloc > 2) && (colBloc <= 3))
-		{
-			this.bloc = '9';
-		}
-	}
-}
-
 $(document).ready(function(){
 
-	for (var i=0; i<boutons.length; i++)
+	// Constructeur pour l'objet case (bloc représente le numéro du bloc de 9 cases la contenant)
+	function Case(ligne, colonne, valeur, numero, bloc, valPossibles, modif)
 	{
-		boutons[i].addEventListener('click', fBoutons, false);	
+		this.modif = true;
+		this.numero = numero;
+		this.ligne = ligne;
+		this.colonne = colonne;
+		this.valeur = valeur;
+		this.valPossibles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+		ligBloc = ligne/3; 
+		colBloc = colonne/3;
+		
+		// calcul du bloc de 9 cases
+		if (ligBloc <= 1)  
+		{
+			if (colBloc <= 1)
+			{
+				this.bloc = '1';
+			}
+			if ((colBloc > 1) && (colBloc <= 2))
+			{
+				this.bloc = '2';
+			}
+			if ((colBloc > 2) && (colBloc <= 3))
+			{
+				this.bloc = '3';
+			}
+		}
+		if ((ligBloc > 1) && (ligBloc <= 2))
+		{
+			if (colBloc <= 1)
+			{
+				this.bloc = '4';
+			}
+			if ((colBloc > 1) && (colBloc <= 2))
+			{
+				this.bloc = '5';
+			}
+			if ((colBloc > 2) && (colBloc <= 3))
+			{
+				this.bloc = '6';
+			}
+		}
+		if ((ligBloc > 2) && (ligBloc <= 3))
+		{
+			if (colBloc <= 1)
+			{
+				this.bloc = '7';
+			}
+			if ((colBloc > 1) && (colBloc <= 2))
+			{
+				this.bloc = '8';
+			}
+			if ((colBloc > 2) && (colBloc <= 3))
+			{
+				this.bloc = '9';
+			}
+		}
 	}
 
-	for (var i=0; i<cases.length; i++)
+	// Renvoie un tableau contenant les numeros des cases du bloc
+	function calculBloc(bloc)
 	{
-		var li = cases[i].id.charAt(3); //récupère la ligne de la case grace a son id
-		var co = cases[i].id.charAt(7); //récupère la colonne de la case grace a son id
-		var val = cases[i].textContent;
-		var nCase = new Case(li, co, val, i); //crée un nouvel objet Case grace a la ligne et la colonne
-		tabCases.push(nCase);
-			
-		cases[i].addEventListener('click', fCases, false);
+		tabBloc = [];
+		for (var i=0; i<tabCases.length; i++)
+		{
+			if (tabCases[i].bloc == bloc)
+			{
+				tabBloc.push(tabCases[i].numero);
+			}
+		}
+		return tabBloc;
 	}
-
-	verif.addEventListener('click', verifier, false);
 
 	// verifie si le sudoku est bien valide
 	function verifier()
 	{
-		
+		if (tabCases === tabSolution)
+		{
+			console.log("valide");
+		}
+		else
+		{
+			console.log("invalide");
+		}
 	}
 
 	// Permet de sélectionner un bouton et de mettre sa valeur en valeur active (elle va etre marquée dans les cases ou on cliquera)
@@ -112,93 +117,95 @@ $(document).ready(function(){
 		}
 	}
 
-	// Renvoie un tableau contenant les numeros des cases du bloc
-	function calculBloc(bloc)
+	// Enlève le chiffre sur toutes les cases de la ligne comme possibilite
+	function testLigne(chiffre, ligne)
 	{
-		tabBloc = [];
-		for (var i=0; i<tabCases.length; i++)
-		{
-			if (tabCases[i].bloc == bloc)
-			{
-				tabBloc.push(tabCases[i].numero);
-			}
-		}
-		return tabBloc;
-	}
-
-	// Vérifie la présence ou non d'un chiffre dans la case
-	function testCase(chiffre, case1)
-	{
-		if (tabCases[case1].valeur != '0')
-		{
-			return false;
-		} 
-		return true;
-	}
-
-	// Vérifie que le même chiffre ne se trouve pas déjà sur la ligne
-	function testLigne(chiffre, ligne, case1)
-	{		
 		for (var i=(ligne-1)*9; i<ligne*9; i++) 
 		{
-			if ((tabCases[i].valeur == chiffre) && (case1 != i))
+			for (var j=0; j<tabCases[i].valPossibles.length; j++)
 			{
-				return false;
-			}		
+				if (tabCases[i].valPossibles[j] == chiffre)
+				{
+					tabCases[i].valPossibles.splice(j, 1);
+				}
+			}
 		}
-		return true;
 	}
 
-	// Vérifie que le même chiffre ne se trouve pas déjà sur la colonne
-	function testColonne(chiffre, colonne, case1)
+	// Enlève le chiffre sur toutes les cases de la colonne comme possibilite
+	function testColonne(chiffre, colonne)
 	{
 		for (var i=0; i<9; i++)
 		{
 			numCase = 9*i+(colonne-1);
-			if ((tabCases[numCase].valeur == chiffre) && (case1 != numCase))
+
+			console.log("chiffre : "+chiffre+" colonne : "+colonne+" case : "+numCase+" possibilite : "+tabCases[numCase].valPossibles)
+
+			for (var j=0; j<tabCases[i].valPossibles.length; j++)
 			{
-				return false;
+				if (tabCases[i].valPossibles[j] == chiffre)
+				{
+					tabCases[numCase].valPossibles.splice(j, 1);
+				}
 			}
 		}
-		return true;
 	}
 
-	// Vérifie que le même chiffre ne se trouve pas déjà dans le bloc
-	function testBloc(chiffre, bloc, case1)
-	{
-	for (var i=0; i<9; i++)
+	// Enlève le chiffre sur toutes les cases du bloc comme possibilite
+	function testBloc(chiffre, bloc)
+	{/*
+		for (var i=0; i<bloc.length; i++)
 		{
-			if ((tabCases[bloc[i]].valeur == chiffre) && (case1 != tabCases[tabBloc[i]]))
-			{			
-				return false;
+			for (var j=0; j<tabCases[i].valPossibles.length; j++)
+			{
+				if (tabCases[i].valPossibles[j] == chiffre)
+				{
+					tabCases[i].valPossibles.splice(chiffre-1, 1);
+				}
 			}
-		}
-		return true;
+		}*/	
 	}
-
-	// Crée une grille de sudoku avec 30 chiffres présents au début
+	
 	function creationSudoku()
 	{
-		for (var i=0; i<30; i++)
+		for (var i=0; i<81; i++)
 		{
-			var valAlea = Math.floor((Math.random() * 9) + 1);
-			var caseAlea = Math.floor((Math.random() * 81));
+			possibilites = tabCases[i].valPossibles.length;
+			var posAlea = Math.floor(Math.random() * possibilites);
+			var valAlea = tabCases[i].valPossibles[posAlea];
+			casesBloc = calculBloc(tabCases[i].bloc);
 			
-			casesBloc = calculBloc(tabCases[caseAlea].bloc);
+			tabCases[i].modif = false;
+			tabCases[i].valeur = valAlea;
+			cases[i].innerHTML = "<p>"+valAlea+"</p>";
+			cases[i].style.color="red";
 			
-			if ((!testBloc(valAlea, casesBloc, caseAlea)) || (!testColonne(valAlea, tabCases[caseAlea].colonne, caseAlea)) || (!testLigne(valAlea, tabCases[caseAlea].ligne, caseAlea)) || (!testCase(valAlea, caseAlea)))
-			{
-				i--;
-			}
-			else
-			{
-				tabCases[caseAlea].modif = false;
-				tabCases[caseAlea].valeur = valAlea;
-				cases[caseAlea].innerHTML = "<p>"+valAlea+"</p>";
-				cases[caseAlea].style.color='red';
-			}
+			testLigne(valAlea, tabCases[i].ligne);
+			testColonne(valAlea, tabCases[i].colonne);
+			testBloc(valAlea, casesBloc);
+		
 		}
+	
+		tabSolution = tabCases;
+	}	
+
+	for (var i=0; i<boutons.length; i++)
+	{
+		boutons[i].addEventListener('click', fBoutons, false);	
 	}
+
+	for (var i=0; i<cases.length; i++)
+	{
+		var li = cases[i].id.charAt(3); //récupère la ligne de la case grace a son id
+		var co = cases[i].id.charAt(7); //récupère la colonne de la case grace a son id
+		var val = cases[i].textContent;
+		var nCase = new Case(li, co, val, i); //crée un nouvel objet Case grace a la ligne et la colonne
+		tabCases.push(nCase);
+			
+		cases[i].addEventListener('click', fCases, false);
+	}
+
+	verif.addEventListener('click', verifier, false);
 
 	creationSudoku();
 });
