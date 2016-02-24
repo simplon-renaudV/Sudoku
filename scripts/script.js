@@ -114,74 +114,94 @@ $(document).ready(function(){
 		}
 	}
 
-	// Enlève le chiffre sur toutes les cases de la ligne comme possibilite
-	function testLigne(chiffre, ligne)
+	// Calcule les chiffres possibles sur la case "position" par rapport a sa ligne
+	function testLigne(ligne, position)
 	{
 		for (var i=(ligne-1)*9; i<ligne*9; i++) 
 		{
-			for (var j=0; j<tabCases[i].valPossibles.length; j++)
+			for (var j=1; j<=9; j++)
 			{
-				if (tabCases[i].valPossibles[j] == chiffre)
+				if (tabCases[i].valeur == j)
 				{
-					tabCases[i].valPossibles.splice(j, 1);
+					indexValeur = tabCases[position].valPossibles.indexOf(j);
+					tabCases[position].valPossibles.splice(indexValeur, 1);
 				}
 			}
 		}
 	}
-
-	// Enlève le chiffre sur toutes les cases de la colonne comme possibilite
-	function testColonne(chiffre, colonne)
+	// Calcule les chiffres possibles sur la case "position" par rapport a sa colonne
+	function testColonne(colonne, position)
 	{
 		for (var i=0; i<9; i++)
 		{
 			numCase = 9*i+(colonne-1);
 
-			for (var j=0; j<tabCases[numCase].valPossibles.length; j++)
+			for (var j=1; j<=9; j++)
 			{
-				if (tabCases[numCase].valPossibles[j] == chiffre)
+				if (tabCases[numCase].valeur == j)
 				{
-					tabCases[numCase].valPossibles.splice(j, 1);
+					indexValeur = tabCases[position].valPossibles.indexOf(j);
+					tabCases[position].valPossibles.splice(indexValeur, 1);
 				}
-			}
+			}	
 		}
 	}
 
-	// Enlève le chiffre sur toutes les cases du bloc comme possibilite
-	function testBloc(chiffre, bloc)
+	// Calcule les chiffres possibles sur la case "position" par rapport a son bloc
+	function testBloc(bloc, position)
 	{
 		for (var i=0; i<bloc.length; i++)
 		{
-			for (var j=0; j<tabCases[bloc[i]].valPossibles.length; j++)
+		
+			for (var j=1; j<=9; j++)
 			{
-				if (tabCases[bloc[i]].valPossibles[j] == chiffre)
+				if (tabCases[bloc[i]].valeur == j)
 				{
-					tabCases[bloc[i]].valPossibles.splice(j, 1);
+					indexValeur = tabCases[position].valPossibles.indexOf(j);
+					tabCases[position].valPossibles.splice(indexValeur, 1);
 				}
-			}
+			}	
 		}
 	}
 	
-	function creationSudoku()
+	function creationSudoku(c)
 	{
-		for (var i=0; i<81; i++)
+	
+		if (c == 81)
 		{
-			possibilites = tabCases[i].valPossibles.length;
-			var posAlea = Math.floor(Math.random() * possibilites);
-			var valAlea = tabCases[i].valPossibles[posAlea];
-			casesBloc = calculBloc(tabCases[i].bloc);
-			
-			tabCases[i].modif = false;
-			tabCases[i].valeur = valAlea;
-			cases[i].innerHTML = "<p>"+valAlea+"</p>";
-			cases[i].style.color="red";
-		
-			testLigne(valAlea, tabCases[i].ligne);
-			testColonne(valAlea, tabCases[i].colonne);
-			testBloc(valAlea, casesBloc);
+			console.log("fini");
+			return 0;
 		}
+
+		casesBloc = calculBloc(tabCases[c].bloc);
+
+		tabCases[c].valPossibles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+		testLigne(tabCases[c].ligne, c);
+		testColonne(tabCases[c].colonne, c);
+		testBloc(casesBloc, c);
+
+		console.log(c);
+		console.log(tabCases[c].valPossibles);
+
+		possibilites = tabCases[c].valPossibles.length;
+		var posAlea = Math.floor(Math.random() * possibilites);
+		var valAlea = tabCases[c].valPossibles[posAlea];
+	
+		if (possibilites == 0)
+		{
+			creationSudoku(c-1);
+		}
+
+		tabCases[c].modif = false;
+		tabCases[c].valeur = valAlea;
+		cases[c].innerHTML = "<p>"+valAlea+"</p>";
+		cases[c].style.color="red";
 	
 		tabSolution = tabCases;
-	}	
+
+		creationSudoku(c+1);
+	}
 
 	for (var i=0; i<boutons.length; i++)
 	{
@@ -201,5 +221,5 @@ $(document).ready(function(){
 
 	verif.addEventListener('click', verifier, false);
 
-	creationSudoku();
+	creationSudoku(0);
 });
